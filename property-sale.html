@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Продажа недвижимости | Дагестан</title>
+    <style>
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        body {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+        
+        /* Навигационная панель (как у вас) */
+        .nav-bar {
+            background-color: #1E3A8A;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            padding: 0  20px;
+            position: relative;
+        }
+        
+        .back-btn {
+            background: #000000;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            margin-right: 20px;
+        }
+        
+        .category-title {
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        
+        .logo-center {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            height: 70px;
+        }
+        
+        /* Основное содержимое */
+        .main-content {
+            display: flex;
+            flex: 1;
+        }
+        
+        /* Левая панель (40%) */
+        .form-panel {
+            width: 40%;
+            padding: 30px;
+            background: #f5f5f5;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .address-input {
+            padding: 12px;
+            width: 100%;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        
+        .type-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .type-btn {
+            flex: 1;
+            padding: 12px;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+        }
+        
+        .type-btn.selected {
+            background: #1E3A8A;
+            color: white;
+            border-color: #1E3A8A;
+        }
+        
+        .form-row {
+            margin-top: 20px;
+        }
+        
+        .form-row h3 {
+            margin-bottom: 8px;
+            color: #333;
+        }
+        
+        .option-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        
+        .option-btn {
+            padding: 8px 12px;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        .option-btn.selected {
+            background: #1E3A8A;
+            color: white;
+        }
+        
+        .price-input {
+            padding: 8px 12px;
+            width: 100%;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            position: relative;
+        }
+        
+        .price-input::after {
+            content: "₽";
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        
+        .floor-input {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .floor-input input {
+            padding: 8px;
+            width: 50px;
+            text-align: center;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        
+        .submit-btn {
+            margin-top: 30px;
+            padding: 15px;
+            background: #136e32;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        
+        /* Правая панель - карта (60%) */
+        .map-panel {
+            width: 60%;
+            background: #e9e9e9;
+            position: relative;
+        }
+        
+        .map-placeholder {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: #666;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Навигационная панель -->
+    <nav class="nav-bar">
+        <div class="back-btn" onclick="window.history.back()">←</div>
+        <div class="category-title">Продажа недвижимости</div>
+        <img src="images/logo.png.png" alt="Логотип" class="logo-center">
+    </nav>
+  <div class="photo-upload-section">
+    <div class="photos-container" id="photosContainer">
+        <!-- Ячейка для загрузки -->
+        <div class="photo-cell">
+            <label class="photo-upload-btn">
+                <input type="file" accept="image/jpeg, image/png" style="display: none;" 
+                       onchange="handlePhotoUpload(this)">
+                <svg viewBox="0 0 24 24" class="camera-icon">
+                    <path fill="#666" d="M12 15.5A3.5 3.5 0 0 1 8.5 12 3.5 3.5 0 0 1 12 8.5a3.5 3.5 0 0 1 3.5 3.5 3.5 3.5 0 0 1-3.5 3.5m7.43-2.53c.04.32.07.64.07.97 0 2.76-2.24 5-5 5s-5-2.24-5-5c0-.33.03-.65.07-.97-.46-.25-.86-.59-1.17-.99-.1.34-.16.69-.16 1.06 0 3.5 2.85 6.35 6.35 6.35s6.35-2.85 6.35-6.35c0-.37-.06-.72-.16-1.06-.31.4-.71.74-1.17.99M12 6.5c1.93 0 3.5 1.57 3.5 3.5s-1.57 3.5-3.5 3.5S8.5 11.93 8.5 10s1.57-3.5 3.5-3.5M5.8 11.5c-.13 0-.25.02-.38.04-.31-.4-.71-.74-1.17-.99-.04-.32-.07-.65-.07-.98C4.18 7.24 6.42 5 9.2 5c.33 0 .66.03.98.07.25-.46.59-.86.99-1.17-.34-.1-.69-.16-1.06-.16C5.65 3.65 2.8 6.5 2.8 10c0 .37.06.72.16 1.06.31-.4.71-.74 1.17-.99-.18-.03-.33-.07-.53-.07z"/>
+                </svg>
+                <span>Добавить фото</span>
+            </label>
+        </div>
+    </div>
+    <div class="upload-status" id="uploadStatus"></div>
+</div>
+
+<script>
+// Конфигурация
+const MAX_PHOTOS = 20;
+const MAX_FILE_SIZE_MB = 50;
+let uploadedPhotos = 0;
+
+// Обработка загрузки
+function handlePhotoUpload(input) {
+    const files = input.files;
+    if (!files || files.length === 0) return;
+
+    const file = files[0];
+    
+    // Проверка размера
+    if (file.size > MAX_FILE_SIZE_MB * 1024 * 1024) {
+        showError(`Файл слишком большой (макс. ${MAX_FILE_SIZE_MB}MB)`);
+        return;
+    }
+
+    // Проверка типа
+    if (!['image/jpeg', 'image/png'].includes(file.type)) {
+        showError('Только JPG/PNG изображения');
+        return;
+    }
+
+    // Лимит фото
+    if (uploadedPhotos >= MAX_PHOTOS) {
+        showError(`Максимум ${MAX_PHOTOS} фото`);
+        return;
+    }
+
+    // Создаем превью
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        const container = document.getElementById('photosContainer');
+        
+        // Ячейка для фото
+        const photoCell = document.createElement('div');
+        photoCell.className = 'photo-cell';
+        photoCell.innerHTML = `
+            <img src="${e.target.result}" alt="Фото объекта">
+            <div class="remove-photo" onclick="removePhoto(this)">×</div>
+            <div class="photo-info">
+                ${(file.size/1024/1024).toFixed(1)}MB<br>
+                ${file.type.split('/')[1].toUpperCase()}
+            </div>
+        `;
+        
+        // Добавляем перед кнопкой
+        container.insertBefore(photoCell, container.lastChild);
+        uploadedPhotos++;
+        
+        // Обновляем статус
+        updateUploadStatus();
+        
+        // Показываем кнопку если есть место
+        if (uploadedPhotos < MAX_PHOTOS) {
+            container.lastChild.style.display = 'flex';
+        } else {
+            container.lastChild.style.display = 'none';
+        }
+    }
+    reader.readAsDataURL(file);
+}
+
+// Удаление фото
+function removePhoto(element) {
+    element.parentElement.remove();
+    uploadedPhotos--;
+    
+    const container = document.getElementById('photosContainer');
+    container.lastChild.style.display = 'flex';
+    updateUploadStatus();
+}
+
+// Обновление статуса
+function updateUploadStatus() {
+    const status = document.getElementById('uploadStatus');
+    status.textContent = `${uploadedPhotos}/${MAX_PHOTOS} фото · макс. ${MAX_FILE_SIZE_MB}MB`;
+    status.style.color = uploadedPhotos === 0 ? '#ff4444' : '#1E3A8A';
+}
+
+// Показ ошибок
+function showError(message) {
+    const status = document.getElementById('uploadStatus');
+    status.textContent = `Ошибка: ${message}`;
+    status.style.color = '#ff4444';
+    setTimeout(() => updateUploadStatus(), 3000);
+}
+
+// Инициализация
+document.addEventListener('DOMContentLoaded', updateUploadStatus);
+</script>
+
+<style>
+/* Стили для загрузки фото */
+.photo-upload-section {
+    padding: 20px 5%;
+    background: #f9f9f9;
+    border-radius: 10px;
+    margin: 20px 0;
+}
+
+.photos-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 10px;
+}
+
+.photo-cell {
+    width: 120px;
+    height: 120px;
+    border: 2px dashed #ccc;
+    border-radius: 8px;
+    position: relative;
+    overflow: hidden;
+    background: white;
+}
+
+.photo-upload-btn {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    color: #666;
+}
+
+.photo-cell img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.remove-photo {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: #1E3A8A;
+    color: white;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    font-size: 12px;
+    line-height: 1;
+}
+    /* Фикс для навбара */
+    .nav-bar {
+        height: 70px !important; /* Фиксированная высота */
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1); /* Добавляем тень */
+    }
+.photo-info {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0,0,0,0.7);
+    color: white;
+    font-size: 10px;
+    padding: 3px;
+    text-align: center;
+}
+
+.upload-status {
+    font-size: 14px;
+    text-align: right;
+    padding: 0 5px;
+}
+</style>
+</script>
+    <!-- Основное содержимое -->
+    <div class="main-content">
+        <!-- Левая панель - форма -->
+        <div class="form-panel">
+            <h2>Адрес объекта</h2>
+            <input type="text" class="address-input" placeholder="Введите адрес в Дагестане">
+            
+            <h2>Тип недвижимости</h2>
+            <div class="type-buttons">
+                <div class="type-btn selected" onclick="selectType(this, 'residential')">Жилая</div>
+                <div class="type-btn" onclick="selectType(this, 'commercial')">Коммерческая</div>
+                <div class="type-btn" onclick="selectType(this, 'land')">Земельный участок</div>
+            </div>
+            
+            <!-- Форма для жилой недвижимости -->
+            <div id="residential-form">
+                <div class="form-row">
+                    <h3>Вид жилья</h3>
+                    <div class="option-buttons">
+                        <div class="option-btn selected" onclick="selectOption(this)">Новостройка</div>
+                        <div class="option-btn" onclick="selectOption(this)">Вторичное</div>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <h3>Количество комнат</h3>
+                    <div class="option-buttons">
+                        <div class="option-btn" onclick="selectOption(this)">1</div>
+                        <div class="option-btn" onclick="selectOption(this)">2</div>
+                        <div class="option-btn" onclick="selectOption(this)">3</div>
+                        <div class="option-btn" onclick="selectOption(this)">4+</div>
+                        <div class="option-btn" onclick="selectOption(this)">Свободная планировка</div>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <h3>Цена</h3>
+                    <input type="number" class="price-input" placeholder="Введите сумму">
+                </div>
+                
+                <div class="form-row">
+                    <h3>Этаж</h3>
+                    <div class="floor-input">
+                        <input type="number" placeholder="Текущий">
+                        <span>/</span>
+                        <input type="number" placeholder="Всего">
+                    </div>
+                </div>
+            </div>
+            
+            <button class="submit-btn" onclick="submitForm()">Создать объявление</button>
+        </div>
+        
+        <!-- Правая панель - карта -->
+        <div class="map-panel">
+            <div class="map-placeholder">
+                Здесь будет карта Дагестана<br>
+                с отметкой вашего адреса
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Выбор типа недвижимости
+        function selectType(element, type) {
+            document.querySelectorAll('.type-btn').forEach(btn => {
+                btn.classList.remove('selected');
+            });
+            element.classList.add('selected');
+            
+            // Здесь можно скрывать/показывать формы для разных типов
+        }
+        
+        // Выбор опции (вид жилья, комнаты)
+        function selectOption(element) {
+            const parent = element.parentElement;
+            parent.querySelectorAll('.option-btn').forEach(btn => {
+                btn.classList.remove('selected');
+            });
+            element.classList.add('selected');
+        }
+        
+        // Отправка формы
+        function submitForm() {
+            const data = {
+                type: "Продажа",
+                category: "Жилая",
+                address: document.querySelector('.address-input').value,
+                propertyType: document.querySelector('#residential-form .option-buttons:nth-child(1) .selected').textContent,
+                rooms: document.querySelector('#residential-form .option-buttons:nth-child(2) .selected').textContent,
+                price: document.querySelector('.price-input').value,
+                floor: document.querySelectorAll('.floor-input input')[0].value + "/" + 
+                      document.querySelectorAll('.floor-input input')[1].value
+            };
+            
+            console.log("Данные для отправки:", data);
+            
+            // Временное сохранение в localStorage
+            let listings = JSON.parse(localStorage.getItem('listings') || '[]');
+            listings.push(data);
+            localStorage.setItem('listings', JSON.stringify(listings));
+            
+            alert("Объявление создано! Объект появится в разделе жилой недвижимости.");
+            window.location.href = "main.html";
+        }
+    </script>
+</body>
+</html>

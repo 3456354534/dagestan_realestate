@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вход | Дагестан Недвижимость</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        body {
+            height: 100vh;
+            display: flex;
+            background-image: url(images/fon.jpg);
+            background-size: cover;
+        }
+        
+        .auth-container {
+            width: 25%;
+            background: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px;
+        }
+        
+        .logo-auth {
+            width: 400px;
+            margin-bottom: 15px;
+        }
+        
+        .company-name-auth {
+            font-family: 'CopticEyes', sans-serif;
+            font-size: 24px;
+            margin-bottom: 80px;
+            text-align: center;
+        }
+        
+        .auth-btn {
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .primary-btn {
+            background-color: #1E3A8A;
+            color: white;
+        }
+        
+        .secondary-btn {
+            background-color: white;
+            color: #1E3A8A;
+            border: 1px solid #1E3A8A;
+        }
+        
+        .divider {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            margin: 20px 0;
+        }
+        
+        .divider-line {
+            flex-grow: 1;
+            height: 1px;
+            background-color: #000;
+        }
+        
+        .divider-text {
+            padding: 0 10px;
+        }
+        
+        .google-btn {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            cursor: pointer;
+        }
+        
+        .google-icon {
+            width: 20px;
+            margin-right: 10px;
+        }
+        
+        /* Модальное окно регистрации */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            width: 350px;
+            text-align: center;
+        }
+        
+        .input-field {
+            width: 100%;
+            padding: 15px;
+            margin: 15px 0;
+            border: 1px solid #000;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-container">
+        <img src="images/logo.png.png" alt="Логотип" class="logo-auth">
+        <div class="company-name-auth">НЕДВИЖИМОСТЬ В ДАГЕСТАНЕ</div>
+        
+        <button class="auth-btn primary-btn" onclick="openLoginModal()">Войти</button>
+        <button class="auth-btn secondary-btn" onclick="openRegisterModal()">Создать аккаунт</button>
+        
+        <div class="divider">
+            <div class="divider-line"></div>
+            <div class="divider-text">или</div>
+            <div class="divider-line"></div>
+        </div>
+        
+        <button class="google-btn">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="Google" class="google-icon">
+            Войти через Google
+        </button>
+    </div>
+    
+    <!-- Модальное окно регистрации -->
+    <div id="registerModal" class="modal">
+        <div class="modal-content">
+            <img src="images/logo.png.png" alt="Логотип" class="logo-auth" style="width: 300px;">
+            <h2 style="margin: 20px 0;">Регистрация</h2>
+            
+            <input type="tel" class="input-field" placeholder="Телефон" id="phoneInput">
+            <button class="auth-btn primary-btn" onclick="sendCode()">Получить код</button>
+            
+            <div id="codeSection" style="display: none;">
+                <input type="text" class="input-field" placeholder="Введите код" id="codeInput">
+                <button class="auth-btn primary-btn" onclick="verifyCode()">Подтвердить</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        function openRegisterModal() {
+            document.getElementById('registerModal').style.display = 'flex';
+        }
+        
+        function sendCode() {
+            // Здесь будет отправка кода на телефон
+            const phone = document.getElementById('phoneInput').value;
+            if (phone) {
+                document.getElementById('phoneInput').style.display = 'none';
+                document.getElementById('codeSection').style.display = 'block';
+                // В реальном приложении здесь будет AJAX-запрос к серверу
+                alert('Код отправлен на номер ' + phone);
+            }
+        }
+        
+        function verifyCode() {
+            // Проверка кода
+            const code = document.getElementById('codeInput').value;
+            if (code) {
+                alert('Регистрация успешна!');
+                window.location.href = 'profile.html'; // Перенаправление в ЛК
+            }
+        }
+        
+        function openLoginModal() {
+            // Аналогично можно сделать для входа
+            alert('Форма входа будет реализована аналогично');
+        }
+    </script>
+</body>
+<script>
+    function openAuthModal() {
+        window.location.href = 'auth.html';
+    }
+</script>
+</html>

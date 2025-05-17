@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Недвижимость в Дагестане</title>
+    <style>
+         /* Добавляем пользовательский шрифт */
+        @font-face {
+            font-family: 'CopticEyes';
+            src: url(srift/shrift_logo.ttf) format('truetype');
+            font-weight: normal;
+            font-style: normal;
+               }
+        /* Щстальные стили остаются как были */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        /* Стили для всей страницы */
+        body, html {
+            height: 100%;
+            overflow: hidden;
+        }
+
+        /* Контейнер для фона и контента */
+        .landing-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+        }
+
+        /* Стили для фона */
+        .background-image {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: url(images/fon.jpg); /* Замените на свой путь к изображению */
+            background-size: cover;
+            background-position: center;
+            z-index: -1;
+        }
+
+        /* Затемнение фона градиентом */
+        .background-overlay {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to left, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.05));
+            z-index: -1;
+        }
+
+        /* Разделительная линия */
+        .divider-line {
+            position: absolute;
+            left: 40%;
+            top: 0;
+            bottom: 0;
+            width: 1px;
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Контейнер для контента слева */
+        .content-left {
+            width: 40%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 0 5%;
+            color: white;
+        }
+
+        /* Стили для логотипа и названия */
+        .logo-container {
+            margin-bottom: 40px;
+        }
+
+        .logo {
+            /* Здесь будет ваш логотип */
+            width: 550px; /* Настройте по своему усмотрению */
+            height: 100px; /* Настройте по своему усмотрению */
+            margin-bottom: 15px;
+            background-color: transparent; /* Замените на свой логотип */
+        }
+
+        .company-name {
+              font-family: 'CopticEyes', sans-serif; /* Применяем новый шрифт */
+            font-size: 50px;
+             font-weight: normal; /* Убираем жирность, если нужно */
+            font-weight: bold;
+            margin-bottom: 5px;
+              text-align: center;
+            color: #000000;
+        }
+
+        /* Основной заголовок */
+        .main-title {
+            font-size: 42px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        /* Описание под заголовком */
+        .description {
+            font-size: 18px;
+            line-height: 1.5;
+            margin-bottom: 40px;
+            opacity: 0.9;
+        }
+
+        /* Кнопка "Поехали" */
+        .start-button {
+            display: inline-block;
+            padding: 15px 30px;
+            background-color: #1E3A8A;
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+            width: fit-content;
+        }
+
+        .start-button:hover {
+            background-color: #1a3173;
+        }
+
+        /* Правая часть (пустая) */
+        .content-right {
+            width: 60%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="landing-container">
+        <!-- Фоновое изображение -->
+        <div class="background-image"></div>
+        <div class="background-overlay"></div>
+        
+        <!-- Разделительная линия -->
+        <div class="divider-line"></div>
+        
+        <!-- Левая часть с контентом -->
+        <div class="content-left">
+            <!-- Логотип и название компании -->
+           <div class="logo-container">
+    <img src="images/logo.png.png" alt="Логотип компании" class="logo">
+    <div class="company-name">Factor</div>
+</div>
+            
+            <!-- Основной заголовок -->
+            <h1 class="main-title">Недвижимость в Дагестане</h1>
+            
+            <!-- Описание -->
+            <p class="description">
+                Ваш надежный проводник в мире городской недвижимости. Мы предоставляем актуальные предложения, собранные с передовых агентств и проверенных источников.
+            </p>
+            
+            <!-- Кнопка -->
+            <a href="main.html" class="start-button">Поехали</a>
+        </div>
+        
+        <!-- Правая часть (пустая) -->
+        <div class="content-right"></div>
+    </div>
+</body>
+</html>

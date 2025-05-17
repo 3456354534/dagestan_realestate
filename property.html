@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Жилая недвижимости  | Дагестан Недвижимость</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        body {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+        
+        /* Навигационная панель */
+        .nav-bar {
+            background-color: #1E3A8A;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            position: relative;
+        }
+        
+        .back-btn {
+            background: #000000;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            margin-right: 20px;
+        }
+        
+        .category-title {
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        
+        .logo-center {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            height: 70px;
+        }
+        
+        /* Поисковая строка и фильтры */
+        .search-filter-container {
+            display: flex;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .search-box {
+            width: 60%;
+            padding: 15px;
+            background: #f5f5f5;
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            font-size: 16px;
+        }
+        
+        .filter-container {
+            width: 40%;
+            background: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: height 0.3s;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .filter-toggle {
+            display: flex;
+            justify-content: center;
+            padding: 15px;
+            cursor: pointer;
+            background: #f5f5f5;
+        }
+        
+        .filter-content {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            padding: 15px;
+        }
+        
+        .filter-column {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .filter-option {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+            font-size: 14px;
+        }
+        
+        .filter-option.selected {
+            background: #1E3A8A;
+            color: white;
+            border-color: #1E3A8A;
+        }
+        
+        .price-inputs {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .price-inputs input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        
+        /* Основное содержимое */
+        .main-content {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+        
+        .map-container {
+            width: 60%;
+            background: #e9e9e9;
+            position: relative;
+        }
+        
+        .map-placeholder {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: #666;
+        }
+        
+        .properties-sidebar {
+            width: 40%;
+            overflow-y: auto;
+            padding: 15px;
+            background: white;
+        }
+        
+        .property-card {
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        
+        .property-card img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+        }
+        
+        .property-info {
+            padding: 15px;
+        }
+        
+        .property-info h3 {
+            margin-bottom: 5px;
+        }
+        
+        .property-price {
+            color: #1E3A8A;
+            font-weight: bold;
+            font-size: 18px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Навигационная панель -->
+    <nav class="nav-bar">
+        <div class="back-btn" onclick="window.history.back()">
+            ←
+        </div>
+        <div class="category-title">Жилая недвижимость </div>
+        <img src="images/logo.png.png" alt="Логотип" class="logo-center">
+    </nav>
+    
+    <!-- Поиск и фильтры -->
+    <div class="search-filter-container">
+        <div class="search-box">
+            <input type="text" class="search-input" placeholder="Поиск по городу...">
+        </div>
+        
+        <div class="filter-container" id="filterContainer">
+            <div class="filter-toggle" onclick="toggleFilters()">
+                <span id="toggleArrow">▼</span> Фильтры
+            </div>
+            
+            <div class="filter-content" id="filterContent">
+                <!-- Колонка 1: Тип жилья -->
+                <div class="filter-column">
+                    <div class="filter-option selected" onclick="selectOption(this)">Все</div>
+                    <div class="filter-option" onclick="selectOption(this)">Новостройки</div>
+                    <div class="filter-option" onclick="selectOption(this)">Вторичное</div>
+                </div>
+                
+                <!-- Колонка 2: Количество комнат -->
+                <div class="filter-column">
+                    <div class="filter-option selected" onclick="selectOption(this)">Студия</div>
+                    <div class="filter-option" onclick="selectOption(this)">1-комнатная</div>
+                    <div class="filter-option" onclick="selectOption(this)">2-х комнатная</div>
+                    <div class="filter-option" onclick="selectOption(this)">3-х комнатная</div>
+                    <div class="filter-option" onclick="selectOption(this)">4+ комнаты</div>
+                    <div class="filter-option" onclick="selectOption(this)">Свободная планировка</div>
+                </div>
+                
+                <!-- Колонка 3: Цена -->
+                <div class="filter-column">
+                    <div class="price-inputs">
+                        <input type="number" placeholder="Цена от">
+                        <input type="number" placeholder="Цена до">
+                    </div>
+                </div>
+                
+                <!-- Колонка 4: Этаж -->
+                <div class="filter-column">
+                    <div class="filter-option selected" onclick="selectOption(this)">Неважно</div>
+                    <div class="filter-option" onclick="selectOption(this)">Не последний</div>
+                    <div class="filter-option" onclick="selectOption(this)">Не первый</div>
+                    <div class="filter-option" onclick="selectOption(this)">Конкретный этаж</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Основное содержимое -->
+    <div class="main-content">
+        <!-- Карта (60%) -->
+        <div class="map-container">
+            <div class="map-placeholder">
+                Здесь будет карта с метками<br>
+                (Яндекс.Карты/Google Maps)
+            </div>
+        </div>
+        
+        <!-- Список объектов (40%) -->
+        <div class="properties-sidebar" id="propertiesList">
+            <!-- Карточки будут добавляться через JS -->
+        </div>
+    </div>
+    
+    <script>
+        // Переключение фильтров
+        function toggleFilters() {
+            const container = document.getElementById('filterContainer');
+            const arrow = document.getElementById('toggleArrow');
+            
+            if (container.style.height === '60px' || !container.style.height) {
+                container.style.height = (document.getElementById('filterContent').offsetHeight + 60) + 'px';
+                arrow.textContent = '▲';
+            } else {
+                container.style.height = '60px';
+                arrow.textContent = '▼';
+            }
+        }
+        
+        // Выбор опции фильтра
+        function selectOption(element) {
+            // Снимаем выделение со всех в колонке
+            const parent = element.parentElement;
+            parent.querySelectorAll('.filter-option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            
+            // Выделяем текущий
+            element.classList.add('selected');
+            
+            // Автоматическое скрытие после выбора
+            setTimeout(() => {
+                if (areAllFiltersSelected()) {
+                    document.getElementById('filterContainer').style.height = '60px';
+                    document.getElementById('toggleArrow').textContent = '▼';
+                }
+            }, 300);
+            
+            // Фильтрация
+            filterProperties();
+        }
+        
+        // Проверка, что все фильтры выбраны
+        function areAllFiltersSelected() {
+            const columns = document.querySelectorAll('.filter-column');
+            for (let column of columns) {
+                if (!column.querySelector('.selected')) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        
+        // Загрузка объектов (заглушка)
+        function loadProperties() {
+            const list = document.getElementById('propertiesList');
+            list.innerHTML = '';
+            
+            // В реальном проекте здесь будет загрузка из базы данных
+            const properties = [
+                { id: 1, type: "Новостройки", rooms: "2-х комнатная", price: "4.5 млн", address: "ул. Гамидова, 45", area: "65 м²" },
+                { id: 2, type: "Вторичное", rooms: "3-х комнатная", price: "6.2 млн", address: "пр. Акушинского, 12", area: "85 м²" },
+                { id: 3, type: "Новостройки", rooms: "1-комнатная", price: "3.1 млн", address: "ул. Коркмасова, 78", area: "45 м²" }
+            ];
+            
+            properties.forEach(prop => {
+                list.innerHTML += `
+                    <div class="property-card">
+                        <img src="assets/property${prop.id}.jpg" alt="${prop.type}">
+                        <div class="property-info">
+                            <h3>${prop.type}, ${prop.rooms}</h3>
+                            <p>${prop.address}</p>
+                            <p>Площадь: ${prop.area}</p>
+                            <div class="property-price">${prop.price} ₽</div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+        
+        // Фильтрация (заглушка)
+        function filterProperties() {
+            console.log('Применены фильтры:');
+            console.log('Тип:', document.querySelector('.filter-column:nth-child(1) .selected').textContent);
+            console.log('Комнаты:', document.querySelector('.filter-column:nth-child(2) .selected').textContent);
+            
+            // В реальном проекте здесь будет AJAX-запрос с параметрами фильтрации
+            loadProperties();
+        }
+        
+        // Инициализация
+        window.onload = function() {
+            loadProperties();
+            // Сворачиваем фильтры по умолчанию
+            document.getElementById('filterContainer').style.height = '60px';
+            
+            // Для поиска по городу
+            document.querySelector('.search-input').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    alert('Поиск по городу: ' + this.value);
+                    // Здесь будет реализация поиска на карте
+                }
+            });
+        };
+    </script>
+</body>
+</html>
